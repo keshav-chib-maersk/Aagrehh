@@ -146,7 +146,7 @@ function invitationUrl(invite) {
 
 function TemplateArtwork({ invite, compact = false }) {
   const template = getTemplate(invite.template);
-  const [first = "Your", second = "Celebration"] = (
+  const [first = "Your celebration", second] = (
     invite.hosts || "Your celebration"
   ).split(" & ");
   return (
@@ -168,7 +168,8 @@ function TemplateArtwork({ invite, compact = false }) {
       <span className="art-logo">aagrehh</span>
       <p>THE WEDDING OF</p>
       <h3>
-        {first} <i>&amp;</i> {second}
+        {first}
+        {second && <><i>&amp;</i> {second}</>}
       </h3>
       <span className="art-rule" />
       <b>
@@ -216,7 +217,7 @@ function GuestInvitation({ invite, onRSVP }) {
   });
   const [submitted, setSubmitted] = useState(false);
   const template = getTemplate(invite?.template);
-  const [firstHost = "Your", secondHost = "Celebration"] = (
+  const [firstHost = "Your celebration", secondHost] = (
     invite?.hosts || "Your celebration"
   ).split(" & ");
 
@@ -315,8 +316,8 @@ function GuestInvitation({ invite, onRSVP }) {
         <p>WITH THE BLESSINGS OF OUR FAMILIES</p>
         <span className="hero-little">we invite you to celebrate</span>
         <h1>
-          {invite.hosts.split(" & ")[0]} <i>&amp;</i>{" "}
-          {invite.hosts.split(" & ")[1]}
+          {firstHost}
+          {secondHost && <><i>&amp;</i> {secondHost}</>}
         </h1>
         <span className="hero-divider" />
         <div className="hero-date">
