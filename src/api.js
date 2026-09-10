@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5113'
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5113').replace(/\/$/, '')
 
 async function request(path, { token, method = 'GET', body } = {}) {
   const response = await fetch(`${API_BASE_URL}${path}`, {
@@ -11,7 +11,7 @@ async function request(path, { token, method = 'GET', body } = {}) {
   })
   const payload = await response.json().catch(() => null)
   if (!response.ok) {
-    const message = payload?.message || (payload?.errors ? Object.values(payload.errors).flat().join(' ') : 'Something went wrong. Please try again.')
+    const message = payload?.message || payload?.title || (payload?.errors ? Object.values(payload.errors).flat().join(' ') : 'Something went wrong. Please try again.')
     throw new Error(message)
   }
   return payload
@@ -20,6 +20,7 @@ async function request(path, { token, method = 'GET', body } = {}) {
 export const authApi = {
   login: (credentials) => request('/api/auth/login', { method: 'POST', body: credentials }),
   register: (account) => request('/api/auth/register', { method: 'POST', body: account }),
+  me: (token) => request('/api/auth/me', { token }),
 }
 
 export const invitationApi = {
